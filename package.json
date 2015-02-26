@@ -1,5 +1,5 @@
 {
-  "name": "ObjectKit",
+  "name": "objectkit",
   "version": "0.0.6",
   "description": "A better object handler for JavaScript, forked from Brototype, and brotied so that we actually know wtf is going on.",
   "main": "objectkit.js",
