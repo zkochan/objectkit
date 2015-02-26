@@ -1,69 +1,87 @@
 /*global describe:false, it:false, expect:false, beforeEach:false */
 
-var Bro = require('./brototype').Bro;
+var Ok = require('./objectkit').Ok;
 var assert = require('assert');
 
-describe('Bro.doYouEven', function() {
+describe('Ok.check', function() {
     it('should be defined', function() {
         var a = {},
-            bro = Bro(a);
-        assert.notEqual(bro.doYouEven, undefined);
+            ok = Ok(a);
+        assert.notEqual(ok.check, undefined);
     });
 
     it('should return true for defined properties', function() {
         var a = {foo: 'bar'},
-            bro = Bro(a);
-        assert.equal(bro.doYouEven('foo'), true);
+            ok = Ok(a);
+        assert.equal(ok.check('foo'), true);
     });
 
     it('should return true for nested properties', function() {
         var a = {foo: {bar: 'baz'}},
-            bro = Bro(a);
-        assert.equal(bro.doYouEven('foo.bar'), true);
+            ok = Ok(a);
+        assert.equal(ok.check('foo.bar'), true);
     });
 
     it('should return false for undefined properties', function() {
         var a = {foo: 'bar'},
-            bro = Bro(a);
-        assert.equal(bro.doYouEven('bar'), false);
+            ok = Ok(a);
+        assert.equal(ok.check('bar'), false);
     });
 });
 
-describe('Bro.iCanHaz', function() {
+describe('Ok.getIfExists', function() {
     it('should return the value of the deep property', function() {
         var a = {b: {c: {d: 32}}},
-            bro = Bro(a);
-        assert.equal(bro.iCanHaz('b.c.d'), 32);
+            ok = Ok(a);
+        assert.equal(ok.getIfExists('b.c.d'), 32);
     });
 
     it('should return undefined for missing property', function() {
         var a = {b: 32},
-            bro = Bro(a);
-        assert.equal(bro.iCanHaz('b.c.d'), undefined);
+            ok = Ok(a);
+        assert.equal(ok.getIfExists('b.c.d'), undefined);
+    });
+
+    it('should return an array when an array is requested', function() {
+        var a = {a: 'foo', b: 'bar', c: 'fred'},
+            values = Ok(a).getIfExists(['a', 'b', 'c', 'd']);
+
+        assert.notEqual(values.indexOf('foo'), -1);
+        assert.notEqual(values.indexOf('bar'), -1);
+        assert.notEqual(values.indexOf('fred'), -1);
     });
 });
 
-describe('Bro.allTheThings', function() {
+describe('Ok.list', function() {
     it('should return an object\'s keys', function() {
         var a = {
                 "foo": 1,
                 "bar": 2
             },
-            keys = Bro(a).allTheThings();
+            keys = Ok(a).list();
         assert.equal(keys.length, 2);
         assert.notEqual(keys.indexOf('foo'), -1);
         assert.notEqual(keys.indexOf('bar'), -1);
     });
+});
 
-    it('should return the keys in order', function () {
-        var a = { 'z': 1, 'y': 2, 'x': 3 },
-            keys = Bro(a).allTheThings();
-        assert.equal(keys[0], 'x');
-        assert.equal(keys[keys.length - 1], 'z');
+describe('Ok.merge', function() {
+    it('should extend first object with second object', function() {
+        var a = {
+                "foo": 1,
+                "bar": 2
+            },b = {
+                "bar": 3,
+                "baz": function(){return false;}
+            };
+            Ok(a).merge(b);
+        assert.equal(a.foo, 1);
+        assert.equal(a.bar, 3);
+        assert.equal(a.baz(), false);
     });
 });
 
-describe('Bro.iDontAlways', function() {
+describe('Ok.ifExists', function() {
     var fired,
         success,
         param,
@@ -89,33 +107,33 @@ describe('Bro.iDontAlways', function() {
     });
 
     it('should check that the requested method is a function', function() {
-        var bro = Bro(obj);
-        bro.iDontAlways('bar').butWhenIdo(fn);
+        var ok = Ok(obj);
+        ok.ifExists('bar').do(fn);
         assert.equal(success, false);
-        bro.iDontAlways('foo').butWhenIdo(fn);
+        ok.ifExists('foo').do(fn);
         assert.equal(success, true);
     });
 
     it('should run the requested method if a function', function() {
-        var bro = Bro(obj);
-        bro.iDontAlways('foo').butWhenIdo(fn);
+        var ok = Ok(obj);
+        ok.ifExists('foo').do(fn);
         assert.equal(fired, true);
     });
 
     it('should pass the method\'s return value as param to callback', function() {
-        var bro = Bro(obj);
-        bro.iDontAlways('foo').butWhenIdo(fn);
+        var ok = Ok(obj);
+        ok.ifExists('foo').do(fn);
         assert.equal(param, 91);
     });
 
     it('should apply the object as its own context', function() {
-        var bro = Bro(obj);
-        bro.iDontAlways('foo').butWhenIdo(fn);
+        var ok = Ok(obj);
+        ok.ifExists('foo').do(fn);
         assert.equal(context, obj);
     });
 });
 
-describe('Bro.braceYourself', function() {
+describe('Ok.try', function() {
     var success,
         error,
         obj = {
@@ -134,14 +152,20 @@ describe('Bro.braceYourself', function() {
     });
 
     it('should fire the callback when an exception is thrown', function() {
-        var bro = Bro(obj);
-        bro.braceYourself('foo').hereComeTheErrors(fn);
+        var ok = Ok(obj);
+        ok.try('foo').catch(fn);
         assert.equal(success, true);
     });
 
     it('should pass the error to the callback', function() {
-        var bro = Bro(obj);
-        bro.braceYourself('foo').hereComeTheErrors(fn);
+        var ok = Ok(obj);
+        ok.try('foo').catch(fn);
         assert.equal(error, 'an error');
     });
+});
+
+describe('ok alias', function(){
+  it('kind of basically works', function(){
+    assert.notEqual(Ok.ok.check, undefined);
+  });
 });

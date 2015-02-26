@@ -1,7 +1,23 @@
-brototype
+Object Kit
 =========
 
-Bro, do you even write javascript?
+A better object handler for JavaScript, forked from Brototype, and [brotied](http://brotie.jdauriemma.com/) so that we actually know wtf is going on.
+
+## Installing
+Object Kit is available via npm
+
+```bash
+# via npm
+$ npm install objectkit
+
+# via bower (*not implemented*)
+$ bower install objectkit
+```
+
+## Adding to your Node.js project
+```js
+var Ok = require('objectkit').Ok;
+```
 
 ## Features
 
@@ -24,7 +40,7 @@ We all hate that, don't we?
 So what if you could just type:
 ```js
 var myURL;
-if (Bro(app).doYouEven('config.environment.buildURL')) {
+if (Ok(app).check('config.environment.buildURL')) {
     myURL = app.config.environment.buildURL('dev');
 }
 ```
@@ -32,96 +48,139 @@ if (Bro(app).doYouEven('config.environment.buildURL')) {
 Or better yet, how about:
 ```js
 var myURL;
-Bro(app)
-    .iDontAlways('config.environment.buildURL')
-    .butWhenIdo(function(val){
-        myURL = val;
+Ok(app)
+    .ifExists('config.environment.buildURL')
+    .do(function(buildURL){
+        myURL = buildURL('dev');
     });
 ```
 
 Well, now you can!
 
+But what if you have something like this:
+
+```js
+app['soap:Envelope']['soap:Body'][0].getResponse[0]['rval'][0].customerId[0]
+```
+
+We got you covered.
+
+```js
+if (Ok(app).check("soap:Envelope.soap:Body.0.getResponse.0.rval.0.customerId.0")) {
+    var thisVar = app['soap:Envelope']['soap:Body'][0].getResponse[0]['rval'][0].customerId[0];
+}
+```
+
 ## Features
 
 ### Testing nested members
 ```js
-if(Bro(object).doYouEven('lift')) {}
+if(Ok(object).check('lift') === Ok.true) {
+    console.log(object.lift);
+}
 ```
 
 Or, just use a callback...
 ```js
-Bro(object)
-    .doYouEven('property.subproperty', function(subproperty) {
+Ok(object)
+    .check('property.subproperty', function(subproperty) {
         console.log(subproperty);
     });
 ```
 
 ### Fetching nested members
 ```js
-var value = Bro(object).iCanHaz('cheezeburger');
+// get a value if it exists
+var value = Ok(object).getIfExists('cheezeburger');
+
+// get an array of values for paths that exist
+var values = Ok(object).getIfExists(['cheezeburger', 'money', 'beer']);
 ```
 
 ### Calling nested functions
 ```js
-Bro(object)
-    .iDontAlways('method')
-    .butWhenIdo(function(returnVal) {
-        ...
+Ok(object)
+    .ifExists('method')
+    .do(function(returnVal) {
+        console.log('object.method() returned ', returnVal);
     });
 ```
 
 ### Handling exceptions
 ```js
-Bro(object)
-    .braceYourself('method.name')
-    .hereComeTheErrors(function(e) {
+Ok(object)
+    .try('method.name')
+    .catch(function(e) {
         console.log('error ' + e + ' happened.');
     });
 ```
 
+### Booleans
+```js
+Ok.true // true;
+Ok.false   // false;
+```
+
 ### Check for undefined
 ```js
-if (Bro(someVar).isThatEvenAthing() === Bro.TOTALLY) {
+if (Ok(someVar).exists() === Ok.true) {
     // do stuff
 }
 ```
 
-### Get a sorted list of object keys
+### Get a list of object keys
 ```js
-var keys = Bro(object).allTheThings();
+var object = {foo: 1, bar: 2};
+Ok(object).list();
+// returns ['foo', 'bar'];
 ```
 
 ### Extending objects
 ```js
 var obj1 = {foo: 'boo', bar: 'bar'},
     obj2 = {foo: 'bar', yes: 'no'};
-Bro(obj1).comeAtMe(obj2);
+Ok(obj1).mergeWith(obj2);
 
 // now obj1.foo == 'bar' and obj1.yes == 'no'
 ```
 
-### Extending Brototype!
-Yes, extend me, Bro!
-
+### Extending Object Kit
 ```js
 var plugin = { foo: function() { whatever; }};
-Bro.prototype.comeAtMe(plugin);
+Ok.prototype.mergeWith(plugin);
 ```
 
+## Original Method Map
+Want to know what was changed into what?
 
-## Tests
-
-`npm test` to run tests.
+```
+Bromise > ObjectKit
+Bro > Ok
+bro > ok
+isThatEvenAThing > exists
+doYouEven > check
+iCanHaz > getIfExists
+comeAtMe > merge
+giveMeProps > list
+hasRespect > has
+iDontAlways > ifExists
+butWhenIdo > do
+braceYourself > try
+hereComeTheErrors > catch
+errorsAreComing > finally
+TOTALLY > true
+NOWAY > false
+```
 
 ## Author
 
-Randy Hunt
+Randy Hunt, brotied by Brandon S.
 
 ## License
 
 The MIT License
 
-Copyright © 2014
+Copyright © 2015
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

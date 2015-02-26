@@ -1,0 +1,26 @@
+{
+  "name": "objectkit",
+  "main": "objectkit.js",
+  "version": "0.0.2",
+  "homepage": "https://github.com/r3mus/objectkit",
+  "authors": [
+    "Brandon Shelley <r3mus@github.com"
+  ],
+  "description": "A better object handler for Javascript, based on Brototype and brotied so we know wtf is going on.",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "objectkit",
+    "ok",
+    "brototype"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
