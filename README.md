@@ -1,51 +1,104 @@
 Object Kit
 =========
 
-A better object handler for JavaScript, forked from Brototype, and [brotied](http://brotie.jdauriemma.com/) so that we actually know wtf is going on.
+ObjectKit is a better object handler for JavaScript, forked from [Brototype](https://github.com/letsgetrandy/brototype) (and [brotied](http://brotie.jdauriemma.com/) so that we actually have a chance at remembering what some of these functions do!)
 
-## Installing
-Object Kit is available via npm
+So what does ObjectKit actually do?
 
-```bash
-# via npm
-$ npm install objectkit
-
-# via bower (*not implemented*)
-$ bower install objectkit
-```
-
-## Adding to your Node.js project
-```js
-var Ok = require('objectkit').Ok;
-```
-
-## Features
-
-You've got a deeply-nested set of objects that may or may not always be there.
 We've all seen something like this:
-`var myURL = app.config.environment.buildURL('dev');`
-which leads to one of our favorite javascript errors...
+`var myURL = app.config.environments.dev.url;`
+which leads to one of our favorite javascript errors:
 `error: undefined is not a function`
 
-And the solution only makes the code base ugly:
+> */ragequit* :@
+
+And the solution:
 ```js
 var myURL;
-if (app && app.config && app.config.environment && app.config.environment.buildURL) {
-    myURL = app.config.environment.buildURL('dev');
+if (app && 
+    app.config && 
+    app.config.environments && 
+    app.config.environments.dev && 
+    app.config.environments.dev.url) {
+    myURL = app.config.environments.dev.url;
 }
 ```
 
-We all hate that, don't we?
+We all hate that, don't we? (And it gets even worse if we use `.hasOwnProperty()`)
 
 So what if you could just type:
 ```js
 var myURL;
+if (ok(app).check('config.environment.environments.dev')) {
+    myURL = app.config.environments.dev.url;
+}
+```
+
+Or even simpler:
+
+```js
+var myURL = ok(app).getIfExists('config.environments.dev.url');
+```
+
+## Important
+In version 0.1.0 and higher, the self-executing nature of objectkit has been deprecated in favor of a more Node.js-style syntax. As such, going forward, this fork only will be tested and targetted at Node.js implementations.
+
+Additionally, `Ok` has been changed to lowercase `ok` in the examples, and `.Ok` is no longer required to initialize `require('objectkit')`.
+
+## Installing
+Object Kit is available via npm:
+
+```bash
+# via npm
+$ npm install objectkit
+```
+
+## Adding to your Node.js project
+```js
+var ok = require('objectkit');
+```
+
+## Functions
+
+
+### **.check**
+
+Check to see if the object exists:
+
+```js
 if (Ok(app).check('config.environment.buildURL')) {
     myURL = app.config.environment.buildURL('dev');
 }
 ```
 
-Or better yet, how about:
+`.check()` also works with `[]` object notation. To check for:
+
+```js
+app['soap:Envelope']['soap:Body'][0].getResponse[0]['rval'][0].customerId[0]
+```
+
+do:
+
+```js
+var customerId;
+if (ok(app).check("soap:Envelope.soap:Body.0.getResponse.0.rval.0.customerId.0")) {
+    customerId = app['soap:Envelope']['soap:Body'][0].getResponse[0]['rval'][0].customerId[0];
+}
+```
+
+You can also access a callback for the target object:
+
+```js
+ok(object)
+    .check('property.with.subproperty', function(subproperty) {
+        console.log(subproperty);
+    });
+```
+
+### **.ifExists.do**
+
+A convenience builder method to check if a nested property exists and do something with the target object:
+
 ```js
 var myURL;
 Ok(app)
@@ -55,49 +108,8 @@ Ok(app)
     });
 ```
 
-Well, now you can!
+Or directly execute a method:
 
-But what if you have something like this:
-
-```js
-app['soap:Envelope']['soap:Body'][0].getResponse[0]['rval'][0].customerId[0]
-```
-
-We got you covered.
-
-```js
-if (Ok(app).check("soap:Envelope.soap:Body.0.getResponse.0.rval.0.customerId.0")) {
-    var thisVar = app['soap:Envelope']['soap:Body'][0].getResponse[0]['rval'][0].customerId[0];
-}
-```
-
-## Features
-
-### Testing nested members
-```js
-if(Ok(object).check('lift') === Ok.true) {
-    console.log(object.lift);
-}
-```
-
-Or, just use a callback...
-```js
-Ok(object)
-    .check('property.subproperty', function(subproperty) {
-        console.log(subproperty);
-    });
-```
-
-### Fetching nested members
-```js
-// get a value if it exists
-var value = Ok(object).getIfExists('cheezeburger');
-
-// get an array of values for paths that exist
-var values = Ok(object).getIfExists(['cheezeburger', 'money', 'beer']);
-```
-
-### Calling nested functions
 ```js
 Ok(object)
     .ifExists('method')
@@ -106,36 +118,63 @@ Ok(object)
     });
 ```
 
-### Handling exceptions
+### **.true** and **.false**
+
+An object alias BOOLs for `true` and `false`:
+
 ```js
-Ok(object)
+if(ok(object).check('lift') === Ok.true) {
+    console.log(object.lift);
+}
+```
+
+### **.getIfExists**
+
+Conveniently retrieve the nested value if it exists, else return undefined:
+```js
+// get a value if it exists
+var value = ok(object).getIfExists('property');
+
+// get an array of values for paths that exist
+var values = ok(object).getIfExists(['name', 'username', 'email']);
+```
+
+### **.try** and **.catch**
+
+Handle exceptions for nested methods:
+
+```js
+ok(object)
     .try('method.name')
     .catch(function(e) {
         console.log('error ' + e + ' happened.');
     });
 ```
 
-### Booleans
-```js
-Ok.true // true;
-Ok.false   // false;
-```
+### **.exists**
 
-### Check for undefined
+Check if any accessible variable exists:
+
 ```js
-if (Ok(someVar).exists() === Ok.true) {
+if (ok(someVar).exists() === Ok.true) {
     // do stuff
 }
 ```
 
-### Get a list of object keys
+### **.list**
+
+Get a list of object keys:
+
 ```js
 var object = {foo: 1, bar: 2};
-Ok(object).list();
+ok(object).list();
 // returns ['foo', 'bar'];
+// equivalent to Object.keys(object)
 ```
 
-### Extending objects
+### **.mergeWith**
+
+Extend one object onto another:
 ```js
 var obj1 = {foo: 'boo', bar: 'bar'},
     obj2 = {foo: 'bar', yes: 'no'};
@@ -151,12 +190,12 @@ Ok.prototype.mergeWith(plugin);
 ```
 
 ## Original Method Map
-Want to know what was changed into what?
+When we bromide Brototype, things changed. If you're looking at reworking your impelemtnation, this is what we changed:
 
 ```
 Bromise > ObjectKit
-Bro > Ok
-bro > ok
+Bro > ok
+bro > (effectively removed in 0.1.0)
 isThatEvenAThing > exists
 doYouEven > check
 iCanHaz > getIfExists
@@ -174,7 +213,7 @@ NOWAY > false
 
 ## Author
 
-Randy Hunt, brotied by Brandon S.
+Randy Hunt, brotied and modified by Brandon Shelley
 
 ## License
 
