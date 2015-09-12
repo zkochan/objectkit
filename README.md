@@ -1,4 +1,4 @@
-Object Kit
+ObjectKit
 =========
 
 ObjectKit is a better object handler for JavaScript, forked from [Brototype](https://github.com/letsgetrandy/brototype) (and [brotied](http://brotie.jdauriemma.com/) so that we actually have a chance at remembering what some of these functions do!)
