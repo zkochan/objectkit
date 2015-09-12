@@ -1,30 +1,30 @@
 {
   "name": "objectkit",
-  "version": "0.0.6",
-  "description": "A better object handler for JavaScript, forked from Brototype, and brotied so that we actually know wtf is going on.",
+  "version": "0.1.0",
+  "description": "ObjectKit is a better object handler for JavaScript, forked from Brototype (and brotied so that we actually have a chance at remembering what some of these functions do!)",
   "main": "objectkit.js",
   "scripts": {
-    "test": "mocha tests.js"
+    "test": "mocha tests"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/r3mus/objectkit.git"
   },
   "author": {
-    "name": "Brandon S."
+    "name": "Brandon Shelley"
   },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/r3mus/objectkit/issues"
   },
-  "homepage": "http://objectkitjs.com",
+  "homepage": "https://github.com/r3mus/objectkit",
   "dependencies": {},
   "devDependencies": {
     "mocha": "~1.21.4"
   },
   "maintainers": [
     {
-      "name": "Brandon S.",
+      "name": "Brandon Shelley",
       "email": "i.am@r3m.us"
     }
   ],
