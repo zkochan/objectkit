@@ -122,7 +122,21 @@ Ok.ok = Ok.prototype = {
     "try": function(methodString) {
         var method = this.getIfExists(methodString);
         return new Promise(this.obj, method, arguments);
+    },
+
+    "create": function(key, value) {
+        var obj = this.obj;
+        var props = key.split('.');
+        for (var i = 0; i < props.length - 1; ++i) {
+            if (obj[props[i]] === undefined) {
+                obj[props[i]] = {};
+            }
+            obj = obj[props[i]];
+        }
+        // the deepest key is set to either an empty object or the value provided
+        obj[props[props.length - 1]] = value === undefined ? {} : value;
     }
+
 };
 
 module.exports = Ok;

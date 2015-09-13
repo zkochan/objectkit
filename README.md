@@ -151,6 +151,18 @@ ok(object)
     });
 ```
 
+### **.create**
+
+Create a deeply nested object:
+
+```js
+// add properties to an object
+ok(object).create('deeply.nested.property');
+
+// set a deeply nested property's value
+ok(object).create('deeply.nested.property', 'some value');  // object.deeply.nested.property = 'some value'
+```
+
 ### **.exists**
 
 Check if any accessible variable exists:
@@ -203,6 +215,7 @@ comeAtMe > merge
 giveMeProps > list
 hasRespect > has
 iDontAlways > ifExists
+makeItHappen > create
 butWhenIdo > do
 braceYourself > try
 hereComeTheErrors > catch

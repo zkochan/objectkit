@@ -10,39 +10,54 @@ describe('ok.check', function() {
     });
 
     it('should return true for defined properties', function() {
-        var a = {foo: 'bar'},
-            okInstance = ok(a);
-        assert.equal(okInstance.check('foo'), true);
+        var a = {
+            foo: 'bar'
+        }
+        assert.equal(ok(a).check('foo'), true);
     });
 
     it('should return true for nested properties', function() {
-        var a = {foo: {bar: 'baz'}},
-            okInstance = ok(a);
-        assert.equal(okInstance.check('foo.bar'), true);
+        var a = {
+            foo: {
+                bar: 'baz'
+            }
+        }
+        assert.equal(ok(a).check('foo.bar'), true);
     });
 
     it('should return false for undefined properties', function() {
-        var a = {foo: 'bar'},
-            okInstance = ok(a);
-        assert.equal(okInstance.check('bar'), false);
+        var a = {
+            foo: 'bar'
+        }
+        assert.equal(ok(a).check('bar'), false);
     });
 });
 
 describe('ok.getIfExists', function() {
     it('should return the value of the deep property', function() {
-        var a = {b: {c: {d: 32}}},
-            okInstance = ok(a);
-        assert.equal(okInstance.getIfExists('b.c.d'), 32);
+        var a = {
+            b: {
+                c: {
+                    d: 32
+                }
+            }
+        }
+        assert.equal(ok(a).getIfExists('b.c.d'), 32);
     });
 
     it('should return undefined for missing property', function() {
-        var a = {b: 32},
-            okInstance = ok(a);
-        assert.equal(okInstance.getIfExists('b.c.d'), undefined);
+        var a = {
+            b: 32
+        }
+        assert.equal(ok(a).getIfExists('b.c.d'), undefined);
     });
 
     it('should return an array when an array is requested', function() {
-        var a = {a: 'foo', b: 'bar', c: 'fred'},
+        var a = {
+                a: 'foo',
+                b: 'bar',
+                c: 'fred'
+            },
             values = ok(a).getIfExists(['a', 'b', 'c', 'd']);
 
         assert.notEqual(values.indexOf('foo'), -1);
@@ -69,14 +84,35 @@ describe('ok.merge', function() {
         var a = {
                 "foo": 1,
                 "bar": 2
-            },b = {
+            },
+            b = {
                 "bar": 3,
-                "baz": function(){return false;}
+                "baz": function() {
+                    return false;
+                }
             };
-            ok(a).merge(b);
+        ok(a).merge(b);
         assert.equal(a.foo, 1);
         assert.equal(a.bar, 3);
         assert.equal(a.baz(), false);
+    });
+});
+
+describe('ok.create', function() {
+    it('should create a deep property', function() {
+        var a = {}
+        ok(a).create('foo.bar.baz');
+        assert.notEqual(a.foo, undefined);
+        assert.notEqual(a.foo.bar, undefined);
+        assert.notEqual(a.foo.bar.baz, undefined);
+    });
+
+    it('should create a deep property with a value', function() {
+        var a = {}
+        ok(a).create('foo.bar', 'baz');
+        assert.notEqual(a.foo, undefined);
+        assert.notEqual(a.foo.bar, undefined);
+        assert.equal(a.foo.bar, 'baz');
     });
 });
 
@@ -106,30 +142,32 @@ describe('ok.ifExists', function() {
     });
 
     it('should check that the requested method is a function', function() {
-        var okInstance = ok(obj);
-        okInstance.ifExists('bar').do(fn);
+        ok(obj).ifExists('bar').do(fn);
         assert.equal(success, false);
-        okInstance.ifExists('foo').do(fn);
+        ok(obj).ifExists('foo').do(fn);
         assert.equal(success, true);
     });
 
     it('should run the requested method if a function', function() {
-        var okInstance = ok(obj);
-        okInstance.ifExists('foo').do(fn);
+        ok(obj).ifExists('foo').do(fn);
         assert.equal(fired, true);
     });
 
     it('should pass the method\'s return value as param to callback', function() {
-        var okInstance = ok(obj);
-        okInstance.ifExists('foo').do(fn);
+        ok(obj).ifExists('foo').do(fn);
         assert.equal(param, 91);
     });
 
     it('should apply the object as its own context', function() {
-        var okInstance = ok(obj);
-        okInstance.ifExists('foo').do(fn);
+        ok(obj).ifExists('foo').do(fn);
         assert.equal(context, obj);
     });
+
+    // it('should call catch when the function does not exist', function() {
+    //     var okInstance = ok(obj);
+    //     okInstance.ifExists('fooz').do().catch(fn);
+    //     assert.equal(context, obj);
+    // });
 });
 
 describe('ok.try', function() {
@@ -151,20 +189,12 @@ describe('ok.try', function() {
     });
 
     it('should fire the callback when an exception is thrown', function() {
-        var okInstance = ok(obj);
-        okInstance.try('foo').catch(fn);
+        ok(obj).try('foo').catch(fn);
         assert.equal(success, true);
     });
 
     it('should pass the error to the callback', function() {
-        var okInstance = ok(obj);
-        okInstance.try('foo').catch(fn);
+        ok(obj).try('foo').catch(fn);
         assert.equal(error, 'an error');
     });
-});
-
-describe('ok alias', function(){
-  it('kind of basically works', function(){
-    assert.notEqual(ok.ok.check, undefined);
-  });
 });
