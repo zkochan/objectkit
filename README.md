@@ -1,9 +1,9 @@
 ObjectKit
 =========
 
-ObjectKit is a better object handler for JavaScript, forked from [Brototype](https://github.com/letsgetrandy/brototype) (and [brotied](http://brotie.jdauriemma.com/) so that we actually have a chance at remembering what some of these functions do!)
+ObjectKit is a better object handler for JavaScript, forked from [Brototype](https://github.com/letsgetrandy/brototype) (and [brotied](http://brotie.jdauriemma.com/) so that we actually have a chance at remembering what each function does).
 
-So what does ObjectKit actually do?
+So what *does* it do?
 
 We've all seen something like this:
 `var myURL = app.config.environments.dev.url;`
@@ -66,7 +66,7 @@ var ok = require('objectkit');
 Check to see if the object exists:
 
 ```js
-if (Ok(app).check('config.environment.buildURL')) {
+if (ok(app).check('config.environment.buildURL')) {
     myURL = app.config.environment.buildURL('dev');
 }
 ```
@@ -101,7 +101,7 @@ A convenience builder method to check if a nested property exists and do somethi
 
 ```js
 var myURL;
-Ok(app)
+ok(app)
     .ifExists('config.environment.buildURL')
     .do(function(buildURL){
         myURL = buildURL('dev');
@@ -111,7 +111,7 @@ Ok(app)
 Or directly execute a method:
 
 ```js
-Ok(object)
+ok(object)
     .ifExists('method')
     .do(function(returnVal) {
         console.log('object.method() returned ', returnVal);
@@ -123,7 +123,7 @@ Ok(object)
 An object alias BOOLs for `true` and `false`:
 
 ```js
-if(ok(object).check('lift') === Ok.true) {
+if(ok(object).check('lift') === ok.true) {
     console.log(object.lift);
 }
 ```
@@ -156,7 +156,7 @@ ok(object)
 Check if any accessible variable exists:
 
 ```js
-if (ok(someVar).exists() === Ok.true) {
+if (ok(someVar).exists() === ok.true) {
     // do stuff
 }
 ```
@@ -178,7 +178,7 @@ Extend one object onto another:
 ```js
 var obj1 = {foo: 'boo', bar: 'bar'},
     obj2 = {foo: 'bar', yes: 'no'};
-Ok(obj1).mergeWith(obj2);
+ok(obj1).mergeWith(obj2);
 
 // now obj1.foo == 'bar' and obj1.yes == 'no'
 ```
@@ -186,7 +186,7 @@ Ok(obj1).mergeWith(obj2);
 ### Extending Object Kit
 ```js
 var plugin = { foo: function() { whatever; }};
-Ok.prototype.mergeWith(plugin);
+ok.prototype.mergeWith(plugin);
 ```
 
 ## Original Method Map
