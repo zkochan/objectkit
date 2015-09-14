@@ -1,6 +1,7 @@
+/*global describe:false, it:false, beforeEach:false */
+
 'use strict';
 
-// Promise... it's stronger than a Promise
 function Promise(object, method, args) {
     this.object = object;
     this.method = method;
@@ -17,7 +18,6 @@ Promise.ok = Promise.prototype = {
         }
         return context;
     },
-
     "catch": function(callback) {
         if (this.method instanceof Function) {
             try {
@@ -50,7 +50,7 @@ Ok.ok = Ok.prototype = {
         return this.obj !== void 0;
     },
 
-    "check": function(key, options) {
+    "has": function(key, options) {
         var optionsOk = Ok(options || {}),
             ok = this.getIfExists(key);
         if (Ok(ok).exists() === Ok.true) {
@@ -73,10 +73,13 @@ Ok.ok = Ok.prototype = {
         }
         var props = key.split('.'),
             item = this.obj;
-        for (var i = 0; i < props.length; i++) {
-            item = item[props[i]];
-            if (Ok(item).exists() === Ok.false) {
-                return item;
+
+        if (item) {
+            for (var i = 0; i < props.length; i++) {
+                item = item[props[i]];
+                if (Ok(item).exists() === Ok.false) {
+                    return item;
+                }
             }
         }
         return item;
@@ -89,7 +92,7 @@ Ok.ok = Ok.prototype = {
             obj = (this instanceof Ok) ? this.obj : Ok.prototype;
         for (i = 0; i < keys.length; i++) {
             prop = keys[i];
-            if (ok.has(prop)) {
+            if (ok.hasProperty(prop)) {
                 obj[prop] = okbject[prop];
             }
         }
@@ -109,7 +112,7 @@ Ok.ok = Ok.prototype = {
         return props;
     },
     
-    "has": function(prop) {
+    "hasProperty": function(prop) {
         return this.obj.hasOwnProperty(prop);
     },
     

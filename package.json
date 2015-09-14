@@ -1,6 +1,6 @@
 {
   "name": "objectkit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "ObjectKit is a better object handler for JavaScript, forked from Brototype (and brotied so that we actually have a chance at remembering what some of these functions do!)",
   "main": "objectkit.js",
   "scripts": {
@@ -20,7 +20,8 @@
   "homepage": "https://github.com/r3mus/objectkit",
   "dependencies": {},
   "devDependencies": {
-    "mocha": "~2.2"
+    "mocha": "~2.2",
+    "should": ""
   },
   "maintainers": [
     {

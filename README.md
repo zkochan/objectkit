@@ -29,7 +29,7 @@ We all hate that, don't we? (And it gets even worse if we use `.hasOwnProperty()
 So what if you could just type:
 ```js
 var myURL;
-if (ok(app).check('config.environment.environments.dev')) {
+if (ok(app).has('config.environment.environments.dev')) {
     myURL = app.config.environments.dev.url;
 }
 ```
@@ -40,10 +40,13 @@ Or even simpler:
 var myURL = ok(app).getIfExists('config.environments.dev.url');
 ```
 
-## Important
-In version 0.1.0 and higher, the self-executing nature of objectkit has been deprecated in favor of a more Node.js-style syntax. As such, going forward, this fork only will be tested and targetted at Node.js implementations.
+## Important Changes in v0.1.0
 
-Additionally, `Ok` has been changed to lowercase `ok` in the examples, and `.Ok` is no longer required to initialize `require('objectkit')`.
+1. The self-executing nature of objectkit has been deprecated in favor of a more Node.js-style syntax. As such, going forward, this fork only will be tested and targetted at Node.js implementations.
+
+2. `.check` has been renamed to `.has`, and the original `.has` has been renamed to `.hasProperty` (which is mostly internal anyway, it probably won't be used).
+
+3. `Ok` has been changed to lowercase `ok` in the examples, and `.Ok` is no longer required to initialize `require('objectkit')`.
 
 ## Installing
 Object Kit is available via npm:
@@ -61,23 +64,23 @@ var ok = require('objectkit');
 ## Functions
 
 
-### **.check**
+### **.has**
 
-Check to see if the object exists:
+Check to see if the deep object exists by passing a dot-notated string:
 
 ```js
-if (ok(app).check('config.environment.buildURL')) {
+if (ok(app).has('config.environment.buildURL')) {
     myURL = app.config.environment.buildURL('dev');
 }
 ```
 
-`.check()` also works with `[]` object notation. To check for:
+`.has()` also works with `[]` object notation. To check for:
 
 ```js
 app['soap:Envelope']['soap:Body'][0].getResponse[0]['rval'][0].customerId[0]
 ```
 
-do:
+simply do:
 
 ```js
 var customerId;
@@ -90,7 +93,7 @@ You can also access a callback for the target object:
 
 ```js
 ok(object)
-    .check('property.with.subproperty', function(subproperty) {
+    .has('property.with.subproperty', function(subproperty) {
         console.log(subproperty);
     });
 ```
@@ -123,7 +126,7 @@ ok(object)
 An object alias BOOLs for `true` and `false`:
 
 ```js
-if(ok(object).check('lift') === ok.true) {
+if(ok(object).has('lift') === ok.true) {
     console.log(object.lift);
 }
 ```
@@ -209,11 +212,11 @@ Bromise > ObjectKit
 Bro > ok
 bro > (effectively removed in 0.1.0)
 isThatEvenAThing > exists
-doYouEven > check
+doYouEven > has
 iCanHaz > getIfExists
 comeAtMe > merge
 giveMeProps > list
-hasRespect > has
+hasRespect > hasProperty
 iDontAlways > ifExists
 makeItHappen > create
 butWhenIdo > do

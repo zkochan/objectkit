@@ -1,19 +1,19 @@
-/*global describe:false, it:false, expect:false, beforeEach:false */
-
 var ok = require('./objectkit');
 var assert = require('assert');
+var should = require('should');
 
-describe('ok.check', function() {
+describe('ok.has', function() {
+
     it('should be defined', function() {
         var a = {};
-        assert.notEqual(ok(a).check, undefined);
+        assert.notEqual(ok(a).has, undefined);
     });
 
     it('should return true for defined properties', function() {
         var a = {
             foo: 'bar'
         }
-        assert.equal(ok(a).check('foo'), true);
+        assert.equal(ok(a).has('foo'), true);
     });
 
     it('should return true for nested properties', function() {
@@ -22,14 +22,19 @@ describe('ok.check', function() {
                 bar: 'baz'
             }
         }
-        assert.equal(ok(a).check('foo.bar'), true);
+        assert.equal(ok(a).has('foo.bar'), true);
     });
 
     it('should return false for undefined properties', function() {
         var a = {
             foo: 'bar'
         }
-        assert.equal(ok(a).check('bar'), false);
+        assert.equal(ok(a).has('bar'), false);
+    });
+
+    it('should fail gracefully if the object is not defined', function() {
+        var a = undefined;
+        assert.equal(ok(a).has('foo.bar'), false);
     });
 });
 
