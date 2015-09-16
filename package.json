@@ -20,8 +20,7 @@
   "homepage": "https://github.com/r3mus/objectkit",
   "dependencies": {},
   "devDependencies": {
-    "mocha": "~2.2",
-    "should": ""
+    "mocha": "~2.2"
   },
   "maintainers": [
     {

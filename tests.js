@@ -1,6 +1,7 @@
+/* global describe:false, it:false, beforeEach:false */
+
 var ok = require('./objectkit');
 var assert = require('assert');
-var should = require('should');
 
 describe('ok.has', function() {
 

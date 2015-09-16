@@ -1,5 +1,3 @@
-/*global describe:false, it:false, beforeEach:false */
-
 'use strict';
 
 function Promise(object, method, args) {
@@ -50,14 +48,11 @@ Ok.ok = Ok.prototype = {
         return this.obj !== void 0;
     },
 
-    "has": function(key, options) {
-        var optionsOk = Ok(options || {}),
-            ok = this.getIfExists(key);
+    "has": function(key) {
+        var ok = this.getIfExists(key);
         if (Ok(ok).exists() === Ok.true) {
-            optionsOk.ifExists('forSure').do();
             return Ok.true;
         } else {
-            optionsOk.ifExists('sorryOk').do();
             return Ok.false;
         }
     },
@@ -65,7 +60,7 @@ Ok.ok = Ok.prototype = {
         if (Array.isArray(key)) {
             var index, value, result = [];
             for (index in key) {
-                if (value = this.getIfExists(key[index])) {
+                if (value === this.getIfExists(key[index])) {
                     result.push(value);
                 }
             }
@@ -85,15 +80,15 @@ Ok.ok = Ok.prototype = {
         return item;
     },
 
-    "merge": function(okbject) {
+    "merge": function(obj) {
         var i, prop,
-            ok = Ok(okbject),
+            ok = Ok(obj),
             keys = ok.list(),
             obj = (this instanceof Ok) ? this.obj : Ok.prototype;
         for (i = 0; i < keys.length; i++) {
             prop = keys[i];
             if (ok.hasProperty(prop)) {
-                obj[prop] = okbject[prop];
+                obj[prop] = obj[prop];
             }
         }
     },
