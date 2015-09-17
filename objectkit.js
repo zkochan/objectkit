@@ -60,8 +60,10 @@ Ok.ok = Ok.prototype = {
         if (Array.isArray(key)) {
             var index, value, result = [];
             for (index in key) {
-                value = this.getIfExists(key[index]);
-                result.push(value);
+                if (key.hasOwnProperty(index)) {
+                    value = this.getIfExists(key[index]);
+                    result.push(value);
+                }
             }
             return result;
         }
