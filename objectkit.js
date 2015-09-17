@@ -60,9 +60,8 @@ Ok.ok = Ok.prototype = {
         if (Array.isArray(key)) {
             var index, value, result = [];
             for (index in key) {
-                if (value === this.getIfExists(key[index])) {
-                    result.push(value);
-                }
+                value = this.getIfExists(key[index]);
+                result.push(value);
             }
             return result;
         }
@@ -80,15 +79,15 @@ Ok.ok = Ok.prototype = {
         return item;
     },
 
-    "merge": function(obj) {
+    "merge": function(inObj) {
         var i, prop,
-            ok = Ok(obj),
+            ok = Ok(inObj),
             keys = ok.list(),
             obj = (this instanceof Ok) ? this.obj : Ok.prototype;
         for (i = 0; i < keys.length; i++) {
             prop = keys[i];
             if (ok.hasProperty(prop)) {
-                obj[prop] = obj[prop];
+                obj[prop] = inObj[prop];
             }
         }
     },
