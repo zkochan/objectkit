@@ -70,7 +70,7 @@ Ok.ok = Ok.prototype = {
         var props = key.split('.'),
             item = this.obj;
 
-        if (item !== undefined) {
+        if (typeof item !== "undefined") {
             for (var i = 0; i < props.length; i++) {
                 item = item[props[i]];
                 if (Ok(item).exists() === Ok.false) {
