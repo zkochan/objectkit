@@ -135,7 +135,7 @@ describe('ok.create', function() {
     });
 });
 
-describe('ok.ifExists', function() {
+describe('ok.ifFunctionExists', function() {
     var fired,
         success,
         param,
@@ -161,32 +161,26 @@ describe('ok.ifExists', function() {
     });
 
     it('should check that the requested method is a function', function() {
-        ok(obj).ifExists('bar').do(fn);
+        ok(obj).ifFunctionExists('bar').do(fn);
         assert.equal(success, false);
-        ok(obj).ifExists('foo').do(fn);
+        ok(obj).ifFunctionExists('foo').do(fn);
         assert.equal(success, true);
     });
 
     it('should run the requested method if a function', function() {
-        ok(obj).ifExists('foo').do(fn);
+        ok(obj).ifFunctionExists('foo').do(fn);
         assert.equal(fired, true);
     });
 
     it('should pass the method\'s return value as param to callback', function() {
-        ok(obj).ifExists('foo').do(fn);
+        ok(obj).ifFunctionExists('foo').do(fn);
         assert.equal(param, 91);
     });
 
     it('should apply the object as its own context', function() {
-        ok(obj).ifExists('foo').do(fn);
+        ok(obj).ifFunctionExists('foo').do(fn);
         assert.equal(context, obj);
     });
-
-    // it('should call catch when the function does not exist', function() {
-    //     var okInstance = ok(obj);
-    //     okInstance.ifExists('fooz').do().catch(fn);
-    //     assert.equal(context, obj);
-    // });
 });
 
 describe('ok.try', function() {

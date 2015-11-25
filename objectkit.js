@@ -123,7 +123,7 @@ Ok.ok = Ok.prototype = {
     },
 
 
-    "ifExists": function(methodString) {
+    "ifFunctionExists": function(methodString) {
         var method = this.getIfExists(methodString);
         return new Promise(this.obj, method, arguments);
     },

@@ -106,14 +106,14 @@ ok(object)
     });
 ```
 
-### **.ifExists.do**
+### **.ifFunctionExists.do**
 
 A convenience builder method to check if a deep function exists and execute it:
 
 ```js
 var url;
 ok(app)
-    .ifExists('config.environment.buildURL')
+    .ifFunctionExists('config.environment.buildURL')
     .do(function(buildURL){
         url = buildURL('dev');
     });
@@ -123,7 +123,7 @@ Or directly execute a method:
 
 ```js
 ok(object)
-    .ifExists('method')
+    .ifFunctionExists('method')
     .do(function(returnVal) {
         console.log('object.method() returned ', returnVal);
     });
