@@ -75,6 +75,13 @@ if (ok(app).has('config.environment.buildURL')) {
 }
 ```
 
+Or check for multiple properties:
+
+```js
+if (ok(app).has(['property.one', 'property.two']) {
+    console.log(app.property.one, app.property.two);
+})
+
 `.has()` also works with `[]` object notation. To check for:
 
 ```js

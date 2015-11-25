@@ -26,6 +26,19 @@ describe('ok.has', function() {
         assert.equal(ok(a).has('foo.bar'), true);
     });
 
+    it('should return true for more than one nested property', function() {
+        var a = {
+            b: {
+                c: 'foo'
+            },
+            d: {
+                e: 'bar'
+            }
+        }
+        assert.equal(ok(a).has(['b.c', 'd.x']), false);
+        assert.equal(ok(a).has(['b.c', 'd.e']), true);
+    });
+
     it('should return false for undefined properties', function() {
         var a = {
             foo: 'bar'

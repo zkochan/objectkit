@@ -11,7 +11,7 @@ Promise.ok = Promise.prototype = {
         if (this.method instanceof Function) {
             var returnValue = this.method.apply(this.object, this.args);
             if (returnValue) {
-                (callback || function(){}).call(context || this.object, returnValue);
+                (callback || function() {}).call(context || this.object, returnValue);
             }
         }
         return context;
@@ -20,14 +20,14 @@ Promise.ok = Promise.prototype = {
         if (this.method instanceof Function) {
             try {
                 this.method.apply(this.object, this.args);
-            } catch(e) {
+            } catch (e) {
                 callback(e);
             }
         } else {
             callback(this.method + ' is not a function.');
         }
     },
-    "finally": function () {
+    "finally": function() {
         this.catch.apply(this, arguments);
     }
 };
@@ -49,11 +49,21 @@ Ok.ok = Ok.prototype = {
     },
 
     "has": function(key) {
-        var ok = this.getIfExists(key);
-        if (Ok(ok).exists() === Ok.true) {
-            return Ok.true;
+        if (key instanceof Array) {
+            var self = this;
+            if (key.every(function(k) {
+                    return Ok(self.getIfExists(k)).exists()
+                })) {
+                return Ok.true;
+            } else {
+                return Ok.false;
+            }
         } else {
-            return Ok.false;
+            if (Ok(this.getIfExists(key)).exists() === Ok.true) {
+                return Ok.true;
+            } else {
+                return Ok.false;
+            }
         }
     },
     "getIfExists": function(key) {
@@ -107,11 +117,11 @@ Ok.ok = Ok.prototype = {
         }
         return props;
     },
-    
+
     "hasProperty": function(prop) {
         return this.obj.hasOwnProperty(prop);
     },
-    
+
 
     "ifExists": function(methodString) {
         var method = this.getIfExists(methodString);
