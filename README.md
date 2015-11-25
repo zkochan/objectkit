@@ -14,13 +14,13 @@ which leads to one of our favorite javascript errors:
 
 And the solution:
 ```js
-var myURL;
+var url;
 if (app && 
     app.config && 
     app.config.environments && 
     app.config.environments.dev && 
     app.config.environments.dev.url) {
-    myURL = app.config.environments.dev.url;
+    url = app.config.environments.dev.url;
 }
 ```
 
@@ -28,16 +28,16 @@ We all hate that, don't we? (And it gets even worse if we use `.hasOwnProperty()
 
 So what if you could just type:
 ```js
-var myURL;
-if (ok(app).has('config.environment.environments.dev')) {
-    myURL = app.config.environments.dev.url;
+var url;
+if (ok(app).has('config.environments.dev.url')) {
+    url = app.config.environments.dev.url;
 }
 ```
 
 Or even simpler:
 
 ```js
-var myURL = ok(app).getIfExists('config.environments.dev.url');
+var url = ok(app).getIfExists('config.environments.dev.url');
 ```
 
 ## Important Changes in v0.1.0
@@ -66,11 +66,12 @@ var ok = require('objectkit');
 
 ### **.has**
 
-Check to see if the deep object exists by passing a dot-notated string:
+Check to see if a deep object exists by passing a dot-notated string:
 
 ```js
+var url;
 if (ok(app).has('config.environment.buildURL')) {
-    myURL = app.config.environment.buildURL('dev');
+    url = app.config.environment.buildURL('dev');
 }
 ```
 
@@ -84,7 +85,7 @@ simply do:
 
 ```js
 var customerId;
-if (ok(app).check("soap:Envelope.soap:Body.0.getResponse.0.rval.0.customerId.0")) {
+if (ok(app).has("soap:Envelope.soap:Body.0.getResponse.0.rval.0.customerId.0")) {
     customerId = app['soap:Envelope']['soap:Body'][0].getResponse[0]['rval'][0].customerId[0];
 }
 ```
@@ -100,14 +101,14 @@ ok(object)
 
 ### **.ifExists.do**
 
-A convenience builder method to check if a nested property exists and do something with the target object:
+A convenience builder method to check if a deep function exists and execute it:
 
 ```js
-var myURL;
+var url;
 ok(app)
     .ifExists('config.environment.buildURL')
     .do(function(buildURL){
-        myURL = buildURL('dev');
+        url = buildURL('dev');
     });
 ```
 
