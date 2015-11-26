@@ -66,7 +66,7 @@ var ok = require('objectkit');
 
 ### **.has**
 
-Check to see if a deep object exists by passing a dot-notated string:
+Check to see if a deeply nested property exists by passing a dot-notated string:
 
 ```js
 var url;
@@ -75,12 +75,14 @@ if (ok(app).has('config.environment.buildURL')) {
 }
 ```
 
-Or check for multiple properties:
+Or check for multiple nested properties:
 
 ```js
 if (ok(app).has(['property.one', 'property.two']) {
+    // returns true if all nested properties exist
     console.log(app.property.one, app.property.two);
 })
+```
 
 `.has()` also works with `[]` object notation. To check for:
 
