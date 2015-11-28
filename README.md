@@ -75,7 +75,7 @@ if (ok(app).has('config.environment.buildURL')) {
 }
 ```
 
-Or check for multiple nested properties:
+Or, ensure that multiple nested members exist by passing an array of paths:
 
 ```js
 if (ok(app).has(['property.one', 'property.two']) {

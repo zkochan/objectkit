@@ -49,21 +49,16 @@ Ok.ok = Ok.prototype = {
     },
 
     "has": function(key) {
-        if (key instanceof Array) {
-            var self = this;
-            if (key.every(function(k) {
-                    return Ok(self.getIfExists(k)).exists()
-                })) {
-                return Ok.true;
-            } else {
-                return Ok.false;
-            }
+        if (!(key instanceof Array)) {
+            key = [key];
+        }
+        var self = this;
+        if (key.every(function(k) {
+                return Ok(self.getIfExists(k)).exists()
+            })) {
+            return Ok.true;
         } else {
-            if (Ok(this.getIfExists(key)).exists() === Ok.true) {
-                return Ok.true;
-            } else {
-                return Ok.false;
-            }
+            return Ok.false;
         }
     },
     "getIfExists": function(key) {
