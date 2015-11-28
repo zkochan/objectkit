@@ -1,7 +1,7 @@
 ObjectKit
 =========
 
-ObjectKit is a better object handler for JavaScript, forked from [Brototype](https://github.com/letsgetrandy/brototype) (and [brotied](http://brotie.jdauriemma.com/) so that it's a little less socially questionable ;)
+ObjectKit is a better object handler for JavaScript, forked from [Brototype](https://github.com/letsgetrandy/brototype) (and [bro-tied](http://pepperthecat.github.io/brotie/) so that it's a little less socially questionable ;)
 
 So what *does* it do?
 
