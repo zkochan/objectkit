@@ -40,6 +40,12 @@ describe('Bro.doYouEven', function() {
             bro = Bro(a);
         assert.equal(bro.doYouEven('foo.bar'), false);
     });
+
+    it('should fail gracefully if the property to check is not defined', function() {
+        var a = {},
+            bro = Bro(a);
+        assert.equal(bro.doYouEven(undefined), false);
+    });
 });
 
 describe('Bro.iCanHaz', function() {
