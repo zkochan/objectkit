@@ -1,6 +1,6 @@
 {
   "name": "objectkit",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "ObjectKit is a better object handler for JavaScript, forked from Brototype (and brotied so that we actually have a chance at remembering what some of these functions do!)",
   "main": "objectkit.js",
   "scripts": {
