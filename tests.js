@@ -50,6 +50,11 @@ describe('ok.has', function() {
         var a = undefined;
         assert.equal(ok(a).has('foo.bar'), false);
     });
+
+    it('should fail gracefully if the property to check is not defined', function() {
+        var a = {};
+        assert.equal(ok(a).has(undefined), false);
+    });
 });
 
 describe('ok.getIfExists', function() {

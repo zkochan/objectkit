@@ -62,6 +62,8 @@ Ok.ok = Ok.prototype = {
         }
     },
     "getIfExists": function(key) {
+        if (typeof key === "undefined")
+            return;
         if (Array.isArray(key)) {
             var index, value, result = [];
             for (index in key) {
